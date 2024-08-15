@@ -1,0 +1,11 @@
+public class OrderResponses {
+    public String getTrack() {
+        return track;
+    }
+
+    public void setTrack(String track) {
+        this.track = track;
+    }
+
+    private String track;
+}
