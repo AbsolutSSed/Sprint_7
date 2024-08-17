@@ -3,12 +3,12 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-public class OrderManager {
+public class OrderManager extends RequestSetup {
     private static final String API_PATH_ORDER = "/api/v1/orders";
     @Step("Создание заказа")
     public Response createOrder(Order order) {
         return given()
-                .header("Concent-type","application/json")
+                .spec(RequestSetup.requestSpec())
                 .body(order)
                 .when()
                 .post(API_PATH_ORDER);
@@ -20,7 +20,7 @@ public class OrderManager {
     @Step("Получение списка заказов")
     public Response getOrdersList() {
         return given()
-                .header("Content-type", "application/json")
+                .spec(RequestSetup.requestSpec())
                 .when()
                 .get(API_PATH_ORDER);
     }

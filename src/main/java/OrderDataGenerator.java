@@ -25,7 +25,7 @@ public class OrderDataGenerator {
                 randomRent,
                 formattedFutureDate,
                 faker.harryPotter().character(),
-                null
+                new String[]{}
                 );
 
         return order;

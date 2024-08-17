@@ -1,5 +1,4 @@
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +13,7 @@ public class CreateOrderTest {
     private final String[] color;
     private OrderDataGenerator orderDataGenerator;
     private OrderManager orderManager;
+    private Order order;
 
     public CreateOrderTest(String[] color) {
         this.color = color;
@@ -21,9 +21,9 @@ public class CreateOrderTest {
 
     @Before
     public void setUp(){
-        RestAssured.baseURI = "https://qa-scooter.praktikum-services.ru/";
         orderDataGenerator = new OrderDataGenerator();
         orderManager = new OrderManager();
+        order = orderDataGenerator.generateOrderData();
     }
     @Parameterized.Parameters(name = "Тест с цветом: {0}")
     public static Collection<Object[]> data() {
@@ -37,7 +37,6 @@ public class CreateOrderTest {
     @Test
     @DisplayName("Создание заказа с параметризацией цвета")
     public void createOrderWithColor() {
-        Order order = orderDataGenerator.generateOrderData();
         order.setColor(color);
         Response createResponse = orderManager.createOrder(order);
         orderManager.assertResponseContainsTrack(createResponse);

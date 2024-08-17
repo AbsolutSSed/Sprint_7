@@ -1,6 +1,5 @@
 import io.qameta.allure.Issue;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,16 +8,16 @@ import static org.junit.Assert.assertEquals;
 
 public class LoginCourierTest {
     private CourierManager courierManager;
+    private Courier courier;
     @Before
     public void setUp(){
-        RestAssured.baseURI = "https://qa-scooter.praktikum-services.ru/";
         courierManager = new CourierManager();
+        courier = courierManager.createCourierData();
     }
     @Test
     @DisplayName("Авторизация курьера")
     public void loginCourier() {
         // Генерация данных и создание курьера
-        Courier courier = courierManager.createCourierData();
         Response createResponse = courierManager.createCourier(courier);
         //Проверка статус кода - 201, сравнение с полученным ответом
         createResponse.then().statusCode(201);
@@ -33,7 +32,6 @@ public class LoginCourierTest {
     @DisplayName("Невозможно авторизоваться без логина")
     public void loginCourierWithoutLoginField() {
         // Генерация данных и создание курьера
-        Courier courier = courierManager.createCourierData();
         Response createResponse = courierManager.createCourier(courier);
         //Проверка статус кода - 201, сравнение с полученным ответом
         createResponse.then().statusCode(201);
@@ -51,7 +49,6 @@ public class LoginCourierTest {
     @Issue("Баг с попыткой логина без пароля, система отдает 504")
     public void loginCourierWithoutPasswordField() {
         // Генерация данных и создание курьера
-        Courier courier = courierManager.createCourierData();
         Response createResponse = courierManager.createCourier(courier);
         //Проверка статус кода - 201, сравнение с полученным ответом
         createResponse.then().statusCode(201);
@@ -68,7 +65,6 @@ public class LoginCourierTest {
     @DisplayName("Невозможно авторизоваться под несуществующими данными")
     public void loginIncorrectCourier() {
         // Генерация данных и попытка залогиниться под ними
-        Courier courier = courierManager.createCourierData();
         Response loginResponse = courierManager.loginCourier(courier);
         loginResponse.then().statusCode(404);
         String responseLogin = loginResponse.getBody().asString();
@@ -78,7 +74,6 @@ public class LoginCourierTest {
     @DisplayName("Невозможно залогиниться под некорректными данными")
     public void loginIncorrectCourierData() {
         // Генерация данных и создание курьера
-        Courier courier = courierManager.createCourierData();
         Response createResponse = courierManager.createCourier(courier);
         //Проверка статус кода - 201, сравнение с полученным ответом
         createResponse.then().statusCode(201);

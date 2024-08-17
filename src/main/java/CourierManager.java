@@ -4,7 +4,7 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
 
-public class CourierManager {
+public class CourierManager extends RequestSetup {
 private CourierDataGenerator courierDataGenerator = new CourierDataGenerator();
 private Gson gson = new Gson();
 
@@ -20,7 +20,7 @@ private Gson gson = new Gson();
     public Response createCourier(Courier courier) {
 
         Response createResponse = given()
-                .header("Content-type", "application/json")
+                .spec(RequestSetup.requestSpec())
                 .body(courier)
                 .when()
                 .post(API_PATH_CREATE);
@@ -29,7 +29,7 @@ private Gson gson = new Gson();
     @Step("Вход в учетную запись курьера")
     public Response loginCourier(Courier courier) {
         Response loginResponse = given()
-                .header("Content-type", "application/json")
+                .spec(RequestSetup.requestSpec())
                 .body(courier)
                 .when()
                 .post(API_PATH_LOGIN);
@@ -38,7 +38,7 @@ private Gson gson = new Gson();
     @Step("Вход в учетную запись курьера для получения ID курьера")
     public int loginCourierAndExtractId(Courier courier) {
         Response loginResponse = given()
-                .header("Content-type", "application/json")
+                .spec(RequestSetup.requestSpec())
                 .body(courier)
                 .when()
                 .post(API_PATH_LOGIN);
@@ -52,7 +52,7 @@ private Gson gson = new Gson();
     public void deleteCourierById(int courierId) {
         System.out.println("Попытка удалить курьера с ID: " + courierId);
         Response deleteResponse = given()
-                .header("Content-type", "application/json")
+                .spec(RequestSetup.requestSpec())
                 .when()
                 .delete(API_PATH_DELETE + courierId);
         System.out.println("Ответ на запрос удаления: " + deleteResponse.getBody().asString());
