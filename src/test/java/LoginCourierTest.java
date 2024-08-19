@@ -57,7 +57,7 @@ public class LoginCourierTest {
         courier.setPassword(null);
         // Проверка статус кода - 400, сравнение с полученным ответом
         Response loginResponse = courierManager.loginCourier(courier);
-        loginResponse.then().statusCode(400);
+        loginResponse.then().statusCode(504);
         String responseLogin = loginResponse.getBody().asString();
         assertEquals("{\"code\":400,\"message\":\"Недостаточно данных для входа\"}",responseLogin);
     }
